@@ -119,7 +119,7 @@ document['ondrag' + e] = function(){return false}});
      * @return 
      */
     this.play = function(index){
-        songQueue.length || throw new Error('No song available');
+        if(!songQueue.length) throw new Error('No song available');
         this.queue(index);
         player.play();
         update();
