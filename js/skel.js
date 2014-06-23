@@ -12,6 +12,11 @@ var MusicPlayer = function(){
     var isPlaying = false;
     //Audio Utilities
     var context, source, analyser, freq;
+
+    var Song = function(file, dataurl){
+        this.file = file;
+        this.dataurl = dataurl;
+    }
     //Canvas utilities
     var canvas,ctx,g1,g2;
 
@@ -47,15 +52,17 @@ var MusicPlayer = function(){
     var loadTracks = function(songs){
         var reader = new FileReader();
         var index = 0;
-        app.songs = songs;
         reader.addEventListener('loadend', function(e){
-            songQueue.push(e.target.result);
-            index < songs.length ? reader.readAsDataURL(songs[index++]) : self.play(songQueue.length-1);
+            songQueue.push(new Song(songs[index], e.target.result));
+            ++index < songs.length ? reader.readAsDataURL(songs[index]) : toLibrary(songQueue);
         }, false);
-        reader.readAsDataURL(songs[index++]);
+        reader.readAsDataURL(songs[index]);
 
     }
-
+    var toLibrary = function(songQueue){
+        for(var i = 0 ; i < songQueue.length ; i++)
+            songlist.innerHTML += "<li onclick='music.play(" + i + ")' >" + songQueue[i].file.name + "</li>" ;
+    }
     /**
      * Description
      * @method attachListeners
@@ -63,17 +70,7 @@ var MusicPlayer = function(){
      */
     var attachListeners = function(){
         ['over', 'end', ''].forEach(function(e){
-/**
- * Description
- * @return Literal
- */
-document['ondrag' + e] = function(){return false}});
-        /**
-         * Description
-         * @method ondrop
-         * @param {} e
-         * @return 
-         */
+        document['ondrag' + e] = function(){return false}});
         document.ondrop = function(e){
             e.preventDefault(); 
             loadTracks(e.dataTransfer.files);
@@ -105,12 +102,13 @@ document['ondrag' + e] = function(){return false}});
      * Object Properties
      * ==============================================================
 
+    /*
      * @method queue
      * @param {} index
      * @return 
      */
     this.queue = function(index){
-        player.src = index === undefined ? songQueue[0] : songQueue[index];
+        player.src = index === undefined ? songQueue[0].dataurl : songQueue[index].dataurl;
     }
     /**
      * Plays a song, and updates canvas
@@ -119,7 +117,8 @@ document['ondrag' + e] = function(){return false}});
      * @return 
      */
     this.play = function(index){
-        if(!songQueue.length) throw new Error('No song available');
+        if(!songQueue.length) throw new Error('No songs available');
+        player.pause();
         this.queue(index);
         player.play();
         update();
@@ -189,3 +188,4 @@ var music;
 window.addEventListener('load', function(){
     music = new MusicPlayer().init();
 }, false);
+
