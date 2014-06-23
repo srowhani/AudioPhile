@@ -2,45 +2,45 @@
 
 <html>
 <head>
-	<meta charset='UTF-8'>
-	<title>AudioPhile - Live Audio Playback and Analysis</title>
-	<style>
-		.songlist{
-			list-style-type: none;
-		}
+    <meta charset='UTF-8'>
+    <title>AudioPhile - Live Audio Playback and Analysis</title>
+    <style>
+        .songlist{
+            list-style-type: none;
+        }
 
-		#visualize{
-			
-			padding-left: 0px;
-			padding-right: 0px;
-			width:100%;
-			max-width: 800px;
-			height:300px;
-			margin-left: auto;
-    		margin-right: auto;
-    		display: block;
-		   	border: 1px black;
-		   	border-radius: 2px;
-		   	box-shadow: 0 0 0 2px black, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
-		}
-		#player{
-			position:fixed;
-			bottom:0px;
-			left:0px;
-			width:100%;
-		}
-	</style>
-	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+        #visualize{
+            
+            padding-left: 0px;
+            padding-right: 0px;
+            width:100%;
+            max-width: 800px;
+            height:300px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            border: 1px black;
+            border-radius: 2px;
+            box-shadow: 0 0 0 2px black, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
+        }
+        #player{
+            position:fixed;
+            bottom:0px;
+            left:0px;
+            width:100%;
+        }
+    </style>
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
 </head>
 <body>
-	<div id='app' ng-app='app' >
-		<canvas id='visualize'></canvas>
-		<ul class='songlist'>
-			
-		</ul>	
-		<audio controls id='player'></audio>
-		<script src='js/skel.js'></script>
-	<div>
+    <div id='app' ng-app='app' >
+        <canvas id='visualize'></canvas>
+        <ul class='songlist'>
+            
+        </ul>   
+        <audio controls id='player'></audio>
+        <script src='js/skel.js'></script>
+    <div>
 </body>
 </html>
