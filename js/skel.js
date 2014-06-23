@@ -1,5 +1,10 @@
+/**
+ * Description
+ * @method MusicPlayer
+ * @return 
+ */
 var MusicPlayer = function(){
-     /*==============================================================
+    /*==============================================================
     * Anonymous Variables
     ==============================================================*/
     var self = this;
@@ -14,11 +19,13 @@ var MusicPlayer = function(){
     * Anonymous Functions
     ==============================================================*/
 
-    /*
-    *  Updates the canvas
-    *  Sums the first 10 elements of the frequency data to determine bass levels
-    *  Clears canvas, and repaints each of the 64 bars.
-    */
+    /**
+     *  Updates the canvas
+     *  Sums the first 10 elements of the frequency data to determine bass levels
+     *  Clears canvas, and repaints each of the 64 bars.
+     * @method update
+     * @return 
+     */
     var update = function(){
         analyser.getByteFrequencyData(freq);
         var count = 0;
@@ -31,9 +38,12 @@ var MusicPlayer = function(){
         if(isPlaying) window.requestAnimationFrame(update) //animate that shit
     }
 
-    /*
-    * @param songs: FileList object containing supposed mp3 files
-    */
+    /**
+     * Description
+     * @method loadTracks
+     * @param {} songs
+     * @return 
+     */
     var loadTracks = function(songs){
         var reader = new FileReader();
         var index = 0;
@@ -46,8 +56,24 @@ var MusicPlayer = function(){
 
     }
 
+    /**
+     * Description
+     * @method attachListeners
+     * @return 
+     */
     var attachListeners = function(){
-        ['over', 'end', ''].forEach(function(e){document['ondrag' + e] = function(){return false}});
+        ['over', 'end', ''].forEach(function(e){
+/**
+ * Description
+ * @return Literal
+ */
+document['ondrag' + e] = function(){return false}});
+        /**
+         * Description
+         * @method ondrop
+         * @param {} e
+         * @return 
+         */
         document.ondrop = function(e){
             e.preventDefault(); 
             loadTracks(e.dataTransfer.files);
@@ -74,27 +100,52 @@ var MusicPlayer = function(){
             }, false);
         });
     }
-     /*==============================================================
-    * Object Properties
-    ==============================================================*/
+     /**
+     * ==============================================================
+     * Object Properties
+     * ==============================================================
 
+     * @method queue
+     * @param {} index
+     * @return 
+     */
     this.queue = function(index){
         player.src = index === undefined ? songQueue[0] : songQueue[index];
     }
+    /**
+     * Plays a song, and updates canvas
+     * @method play
+     * @param {} index
+     * @return 
+     */
     this.play = function(index){
-        if(!songQueue.length) 
-            throw new Error('No song available');
+        songQueue.length || throw new Error('No song available');
         this.queue(index);
         player.play();
         update();
     }
+    /**
+     * Shuffles the player
+     * @method shuffle
+     * @return 
+     */
     this.shuffle = function(){
         this.play(Math.floor(Math.random()*songQueue.length));
         player.onended = function(){self.shuffle()};
     }
+   /**
+    * Pauses the player
+    * @method pause
+    * @return 
+    */
    this.pause = function(){
         player.pause();
     }
+    /**
+     * Initiates the app
+     * @method init
+     * @return ThisExpression
+     */
     this.init = function(){
         //--> Audio Components
         context  =  new window.AudioContext()       || 
@@ -115,7 +166,7 @@ var MusicPlayer = function(){
         g1     = ctx.createLinearGradient(0,0,0,canvas.height);
         g2     = ctx.createLinearGradient(0,0,0,canvas.height);
 
-        for(var i = 1, j = 0 ; i >= 0 && j < 5; i-=.25, j++){
+        for(var i = 1, j = 0 ; j < 5; i-=.25, j++){
             g1.addColorStop(i, '#000000,#ff0000,#fff000,#ffff00,#fffff0'.split(',')[j])
             g2.addColorStop(i, '#000000,#0000ff,#000fff,#00ffff,#0fffff'.split(',')[j])
         }
