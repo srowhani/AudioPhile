@@ -15,13 +15,12 @@ var MusicPlayer = function(){
             HEIGHT = canvas.height;
         analyser.getByteFrequencyData(freq);
         var count = 0;
-        for(var i = 0 ; i < 10 ; i++) count += freq[i];
-        
-        if(count > 2200) ctx.fillStyle = g2; //2200 is an arbitrary number that shows bass
-        else ctx.fillStyle = g1;    
-
+        for(var i = 0 ; i < 10 ; i++) 
+            count += freq[i];
+        ctx.fillStyle = count < 2200 ? g1 : g2
         ctx.clearRect(0, 0, WIDTH, HEIGHT);
-        for(var i = 0 ; i < freq.length ; i++) ctx.fillRect(i*5+2, HEIGHT , 3, (HEIGHT - (freq[i]+40))); // x pos, y pos, width, height
+        for(var i = 0 ; i < freq.length ; i++) 
+            ctx.fillRect(i*5+2, HEIGHT , 3, (HEIGHT - (freq[i]+40))); // x pos, y pos, width, height
         if(isPlaying) window.requestAnimationFrame(update) //animate that shit
     }
 
@@ -70,10 +69,10 @@ var MusicPlayer = function(){
         player.src = index === undefined ? songQueue[0] : songQueue[index];
     }
     MusicPlayer.prototype.play = function(index){
-        if(!songQueue.length) return console.trace('No songs in queue');
+        if(!songQueue.length) 
+            throw new Error('No song available');
         this.queue(index);
         player.play();
-        isPlaying = true;
         update();
     }
     MusicPlayer.prototype.shuffle = function(){
