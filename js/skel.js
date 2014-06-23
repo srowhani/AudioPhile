@@ -2,20 +2,14 @@ var MusicPlayer = function(){
     var self = this;
     var songQueue = [];
     var isPlaying = false;
+    //Audio Utilities
+    var context, source, analyser, freq;
+    //Canvas utilities
+    var canvas,ctx,g1,g2;
 
-    var player = document.getElementById('player');
-    
-    var context;
-    var source;
-    var analyser;
-    var freq;
-
-    var canvas; 
-    var ctx; 
-
-    var gradient1; 
-    var gradient2; 
-
+    /**
+    * Anonymous Functions
+    */
     var update = function(){
         var WIDTH = canvas.width,
             HEIGHT = canvas.height;
@@ -23,13 +17,11 @@ var MusicPlayer = function(){
         var count = 0;
         for(var i = 0 ; i < 10 ; i++) count += freq[i];
         
-        if(count > 2200) ctx.fillStyle = gradient2; //2200 is an arbitrary number that shows bass
-        else ctx.fillStyle = gradient1;    
+        if(count > 2200) ctx.fillStyle = g2; //2200 is an arbitrary number that shows bass
+        else ctx.fillStyle = g1;    
 
         ctx.clearRect(0, 0, WIDTH, HEIGHT);
-        for(var i = 0 ; i < freq.length ; i++){
-            ctx.fillRect(i*5+2, HEIGHT , 3, (HEIGHT - (freq[i]+40))); // x pos, y pos, width, height
-        }
+        for(var i = 0 ; i < freq.length ; i++) ctx.fillRect(i*5+2, HEIGHT , 3, (HEIGHT - (freq[i]+40))); // x pos, y pos, width, height
         if(isPlaying) window.requestAnimationFrame(update) //animate that shit
     }
 
@@ -39,12 +31,41 @@ var MusicPlayer = function(){
         app.songs = songs;
         reader.addEventListener('loadend', function(e){
             songQueue.push(e.target.result);
-            if(index < songs.length) reader.readAsDataURL(songs[index++]);
-            else self.play(songQueue.length-1);
+            index < songs.length ? reader.readAsDataURL(songs[index++]) : self.play(songQueue.length-1);
         }, false);
         reader.readAsDataURL(songs[index++]);
 
     }
+
+    var attachListeners = function(){
+        ['over', 'end', ''].forEach(function(e){document['ondrag' + e] = function(){return false}});
+        document.ondrop = function(e){
+            e.preventDefault(); 
+            loadTracks(e.dataTransfer.files);
+        };
+
+        document.addEventListener('keydown', function(e){
+            switch(e.which){
+                case 32:
+                    isPlaying ? player.pause() : player.play();
+                    break;
+                default:
+                    break;
+            }
+            //console.log(e.which);
+        }, false);
+
+        player.addEventListener('play', function(){
+            isPlaying = true;
+            window.requestAnimationFrame(update);
+        }, false);
+        ['ended', 'pause'].forEach(function(e){
+            player.addEventListener(e, function(){
+                isPlaying = false;
+            }, false);
+        });
+    }
+    
     MusicPlayer.prototype.queue = function(index){
         player.src = index === undefined ? songQueue[0] : songQueue[index];
     }
@@ -93,37 +114,6 @@ var MusicPlayer = function(){
     MusicPlayer.prototype.getContext = function(){return context};
     MusicPlayer.prototype.getSource = function(){return source};
     MusicPlayer.prototype.getQueue = function(){return songQueue};
-
-    var attachListeners = function(){
-        ['over', 'end', ''].forEach(function(e){document['ondrag' + e] = function(){return false}});
-        document.ondrop = function(e){
-            e.preventDefault(); 
-            loadTracks(e.dataTransfer.files);
-        };
-
-        document.addEventListener('keydown', function(e){
-            switch(e.which){
-                case 32:
-                    isPlaying ? player.pause() : player.play();
-                    break;
-                default:
-                    break;
-            }
-            //console.log(e.which);
-        }, false);
-
-        player.addEventListener('play', function(){
-            isPlaying = true;
-            window.requestAnimationFrame(update);
-        }, false);
-        player.addEventListener('ended', function(){
-            isPlaying = false;
-        }, false);
-        player.addEventListener('pause', function(){
-            isPlaying = false;
-        }, false);
-    }
-    
 
 }//END AUDIOAPP
 
