@@ -166,10 +166,10 @@ var MusicPlayer = function(){
         g2     = ctx.createLinearGradient(0,0,0,canvas.height);
 
         for(var i = 1, j = 0 ; j < 5; i-=.25, j++){
-            g1.addColorStop(i, '#000000,#ff0000,#fff000,#ffff00,#fffff0'.split(',')[j])
-            g2.addColorStop(i, '#000000,#0000ff,#000fff,#00ffff,#0fffff'.split(',')[j])
+            g1.addColorStop(i, ["#000000", "#ff0000", "#fff000", "#ffff00", "#fffff0"][j])
+            g2.addColorStop(i, ["#000000", "#0000ff", "#000fff", "#00ffff", "#0fffff"][j])
         }
-        attachListeners();
+        attachListeners.call();
         return this;
     }
 
