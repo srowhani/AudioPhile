@@ -40,7 +40,7 @@ var MusicPlayer = function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for(var i = 0 ; i < freq.length ; i++) 
             ctx.fillRect(i*5+2, canvas.height , 3, (canvas.height - (freq[i]+40))); // x pos, y pos, width, height
-        if(isPlaying) window.requestAnimationFrame(update) //animate that shit
+        //if(isPlaying) window.requestAnimationFrame(update) //animate that shit
     }
 
     /**
@@ -61,7 +61,7 @@ var MusicPlayer = function(){
     }
     var toLibrary = function(songQueue){
         for(var i = 0 ; i < songQueue.length ; i++)
-            songlist.innerHTML += "<li onclick='music.play(" + i + ")' >" + songQueue[i].file.name + "</li>" ;
+            songlist.innerHTML += "<div style=\"border-style='solid' border-width='1px'\" onclick='music.play(" + i + ")' >" + songQueue[i].file.name + "</div><br>" ;
     }
     /**
      * Description
@@ -89,7 +89,7 @@ var MusicPlayer = function(){
 
         player.addEventListener('play', function(){
             isPlaying = true;
-            window.requestAnimationFrame(update);
+            self.play();
         }, false);
         ['ended', 'pause'].forEach(function(e){
             player.addEventListener(e, function(){
@@ -118,20 +118,11 @@ var MusicPlayer = function(){
      */
     this.play = function(index){
         if(!songQueue.length) throw new Error('No songs available');
-        player.pause();
         this.queue(index);
         player.play();
-        update();
+        player.onplaying = function(){window.requestAnimationFrame(update);}
     }
-    /**
-     * Shuffles the player
-     * @method shuffle
-     * @return 
-     */
-    this.shuffle = function(){
-        this.play(Math.floor(Math.random()*songQueue.length));
-        player.onended = function(){self.shuffle()};
-    }
+    
    /**
     * Pauses the player
     * @method pause
@@ -180,6 +171,15 @@ var MusicPlayer = function(){
     this.getContext = function(){return context};
     this.getSource = function(){return source};
     this.getQueue = function(){return songQueue};
+    /**
+     * Shuffles the player
+     * @method shuffle
+     * @return 
+     *
+    this.shuffle = function(){
+        this.play(Math.floor(Math.random()*songQueue.length));
+        player.onended = function(){self.shuffle()};
+    }
     */
 
 }//END AUDIOAPP
