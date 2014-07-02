@@ -7,16 +7,16 @@ var MusicPlayer = function(){
     /*==============================================================
     * Anonymous Variables
     ==============================================================*/
-    var self = this;
-    var songQueue = [];
+    var songList = [];
     var isPlaying = false;
     //Audio Utilities
-    var context, source, analyser, freq;
-
-    var Song = function(file, dataurl){
+    var Song = function(file, dataurl,el){
         this.file = file;
         this.dataurl = dataurl;
+        this.el = el;
+        this.playing = false;
     }
+    var context, source, analyser, freq;
     //Canvas utilities
     var canvas,ctx,g1,g2;
 
@@ -40,7 +40,7 @@ var MusicPlayer = function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for(var i = 0 ; i < freq.length ; i++) 
             ctx.fillRect(i*5+2, canvas.height , 3, (canvas.height - (freq[i]+40))); // x pos, y pos, width, height
-        //if(isPlaying) window.requestAnimationFrame(update) //animate that shit
+        !isPlaying || window.requestAnimationFrame(update) //animate that shit
     }
 
     /**
@@ -49,19 +49,39 @@ var MusicPlayer = function(){
      * @param {} songs
      * @return 
      */
+    var index = 0;
+    var cup = [];
     var loadTracks = function(songs){
         var reader = new FileReader();
-        var index = 0;
+        var song;
         reader.addEventListener('loadend', function(e){
-            songQueue.push(new Song(songs[index], e.target.result));
-            ++index < songs.length ? reader.readAsDataURL(songs[index]) : toLibrary(songQueue);
+            if(player.canPlayType(songs[index].type)){
+                song = new Song(songs[index],e.target.result, document.createElement('li'));
+                songList.push(song);
+                cup.push(song);
+                if(++index < songs.length)
+                    reader.readAsDataURL(songs[index]);
+                else{
+                    setLibrary(cup);
+                    index = 0;
+                    cup = [];
+                }
+            }
+
         }, false);
-        reader.readAsDataURL(songs[index]);
+        reader.readAsDataURL(songs[0]);
 
     }
-    var toLibrary = function(songQueue){
-        for(var i = 0 ; i < songQueue.length ; i++)
-            songlist.innerHTML += "<div style=\"border-style='solid' border-width='1px'\" onclick='music.play(" + i + ")' >" + songQueue[i].file.name + "</div><br>" ;
+    var setLibrary = function(songList){
+        for (var i = 0 ; i < songList.length ; i++){
+            var song = songList[i];
+            song.el.setAttribute('onclick', 'music.play(' + i + ')');
+            var title = "<h4>".concat(song.file.name).concat("</h4>")
+            var size = "<small>Size: ".concat(Math.floor(song.file.size/1048576)).concat("mb</small>")
+            song.el.innerHTML =  title.concat(size);
+            songlist.appendChild(song.el);
+        }
+       
     }
     /**
      * Description
@@ -70,8 +90,8 @@ var MusicPlayer = function(){
      */
     var attachListeners = function(){
         ['over', 'end', ''].forEach(function(e){
-        document['ondrag' + e] = function(){return false}});
-        document.ondrop = function(e){
+        songlist['ondrag' + e] = function(){return false}});
+        songlist.ondrop = function(e){
             e.preventDefault(); 
             loadTracks(e.dataTransfer.files);
         };
@@ -89,7 +109,7 @@ var MusicPlayer = function(){
 
         player.addEventListener('play', function(){
             isPlaying = true;
-            self.play();
+            window.requestAnimationFrame(update);
         }, false);
         ['ended', 'pause'].forEach(function(e){
             player.addEventListener(e, function(){
@@ -108,7 +128,7 @@ var MusicPlayer = function(){
      * @return 
      */
     this.queue = function(index){
-        player.src = index === undefined ? songQueue[0].dataurl : songQueue[index].dataurl;
+        player.src = index === undefined ? songList[0].dataurl : songList[index].dataurl;
     }
     /**
      * Plays a song, and updates canvas
@@ -117,10 +137,10 @@ var MusicPlayer = function(){
      * @return 
      */
     this.play = function(index){
-        if(!songQueue.length) throw new Error('No songs available');
+        if(!songList.length) throw new Error('No songs available');
         this.queue(index);
-        player.play();
-        player.onplaying = function(){window.requestAnimationFrame(update);}
+        player.pause();
+        window.setTimeout(2000, player.play());
     }
     
    /**
@@ -160,9 +180,10 @@ var MusicPlayer = function(){
             g1.addColorStop(i, ["#000000", "#ff0000", "#fff000", "#ffff00", "#fffff0"][j])
             g2.addColorStop(i, ["#000000", "#0000ff", "#000fff", "#00ffff", "#0fffff"][j])
         }
-        attachListeners.call();
+        attachListeners();
         return this;
     }
+    this.getQueue = function(){return songList};
 
     /*==============================================================
     * Leftovers
@@ -170,7 +191,6 @@ var MusicPlayer = function(){
     /*
     this.getContext = function(){return context};
     this.getSource = function(){return source};
-    this.getQueue = function(){return songQueue};
     /**
      * Shuffles the player
      * @method shuffle

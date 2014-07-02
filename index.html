@@ -4,28 +4,42 @@
 <head>
     <meta charset='UTF-8'>
     <title>AudioPhile - Live Audio Playback and Analysis</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='css/bootstrap.icon-large.min.css' rel='stylesheet' type='text/css'>
+
     <style>
         .center{
             padding-left: 0px;
             padding-right: 0px;
             max-width: 800px;
+            width: 100%;
             margin-left: auto;
             margin-right: auto;
             display: block;
         }
+        .playing{
+            background-color: #585858;
+
+        }
+        #songlist > li{
+            display:block;
+            background-color: #eee;
+            padding:2px;
+            box-shadow: inset 0 1px 0 #fff;
+        }
         #songlist{
+            font-family: 'Open Sans', sans-serif;            
             overflow-y: scroll;
-            font-family: arial;
-            text-align: right;
+            padding-left:2px;
             border-style: solid;
-            border-width: 1px;
+            border-width: 2px;
             height:300px;"
         }
         #visualize{
-            height:300px;
+            vertical-align: bottom;
+            padding-bottom:0px;
+            height:250px;
             width:100%;
-            border-radius: 2px;
-            box-shadow: 0 0 0 2px black, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
         }
         #player{
             position:fixed;
@@ -37,12 +51,9 @@
     <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
 </head>
-<body>
-    <canvas class='center' id='visualize'></canvas>
-    <br>
-    <div class='center' id="songlist">  
-
-    </div>
+<body class='center'>
+    <canvas id='visualize'></canvas>
+    <div id="songlist"></div>
     <audio controls id='player'></audio>
     <script src='js/skel.js'></script>
 </body>
