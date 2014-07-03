@@ -50,17 +50,19 @@ var MusicPlayer = function(){
      * @param {} songs
      * @return 
      */
-    var index = 0;
+    var index = 0, i = 0;
     var cup = [];
     var loadTracks = function(songs){
         var reader = new FileReader();
         var song;
         reader.addEventListener('loadend', function(e){
-            if(player.canPlayType(songs[index].type)){
-                song = new Song(songs[index], e.target.result, document.createElement('li'));
-                if(addToLibrary(song) && ++index < songs.length)
+            if(player.canPlayType(songs[i].type)){
+                song = new Song(songs[i], e.target.result, document.createElement('li'));
+                if(addToLibrary(song) && ++i < songs.length){
                     console.log(index);
                     reader.readAsDataURL(songs[index]);
+                }
+                else i = 0;
             }
 
         }, false);
@@ -71,6 +73,7 @@ var MusicPlayer = function(){
         console.log(song);
         for(var s in songList)
             if(song.name === s.name) return false;
+        index++;
         songList.push(song);
         song.el.setAttribute('data-index', songList.length);
         song.el.addEventListener('click', function(){
