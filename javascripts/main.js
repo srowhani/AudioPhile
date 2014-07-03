@@ -70,8 +70,10 @@ var MusicPlayer = function(){
     }
     var addToLibrary = function(song){
         console.log(song);
-        for(var s in songList)
-            if(song.name == s.name) return false;
+        for(var s in songList){
+            console.log(s);
+            if(song.name == s.name) return false;}
+        }
         songList.push(song);
         song.el.setAttribute('data-index', songList.length);
         song.el.addEventListener('click', function(){
