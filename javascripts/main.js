@@ -59,7 +59,7 @@ var MusicPlayer = function(){
                 song = new Song(songs[i], e.target.result, document.createElement('li'));
                 if(addToLibrary(song) && ++i < songs.length){
                     console.log(i);
-                    reader.readAsDataURL(songs[i]);}
+                    reader.readAsDataURL(songs[i]);
                 }
                 else i = 0;
             }
