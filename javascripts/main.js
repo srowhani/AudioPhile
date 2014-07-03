@@ -73,7 +73,7 @@ var MusicPlayer = function(){
         songList.push(song);
         song.el.setAttribute('data-index', songList.length);
         song.el.addEventListener('click', function(){
-            music.play(song.el.getAttribute('data-index'));
+            music.play(song.el.getAttribute('data-index')-1);
         })
         var title = "<h4>".concat(song.name).concat("</h4>")
         var size = "<small>Size: ".concat(Math.floor(song.file.size/1048576)).concat("mb</small>")
