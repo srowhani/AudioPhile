@@ -58,8 +58,8 @@ var MusicPlayer = function(){
         reader.addEventListener('loadend', function(e){
             if(player.canPlayType(songs[index].type)){
                 song = new Song(songs[index], e.target.result, document.createElement('li'));
-                addToLibrary(song);
-                if(++index < songs.length)
+               
+                if(addToLibrary(song) && ++index < songs.length)
                     reader.readAsDataURL(songs[index]);
             }
 
@@ -69,7 +69,7 @@ var MusicPlayer = function(){
     }
     var addToLibrary = function(song){
         for(var s in songList)
-            if(song.name === s.name) return;
+            if(song.name === s.name) return false;
         songList.push(song);
         song.el.setAttribute('data-index', songList.length);
         song.el.addEventListener('click', function(){
@@ -79,6 +79,7 @@ var MusicPlayer = function(){
         var size = "<small>Size: ".concat(Math.floor(song.file.size/1048576)).concat("mb</small>")
         song.el.innerHTML =  title.concat(size);
         songlist.appendChild(song.el);
+        return true;
 
        
     }
