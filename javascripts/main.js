@@ -58,8 +58,8 @@ var MusicPlayer = function(){
         reader.addEventListener('loadend', function(e){
             if(player.canPlayType(songs[index].type)){
                 song = new Song(songs[index], e.target.result, document.createElement('li'));
-               
                 if(addToLibrary(song) && ++index < songs.length)
+                    console.log(index);
                     reader.readAsDataURL(songs[index]);
             }
 
@@ -68,6 +68,7 @@ var MusicPlayer = function(){
 
     }
     var addToLibrary = function(song){
+        console.log(song);
         for(var s in songList)
             if(song.name === s.name) return false;
         songList.push(song);
