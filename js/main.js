@@ -12,6 +12,7 @@ var MusicPlayer = function(){
     //Audio Utilities
     var Song = function(file, dataurl,el){
         this.file = file;
+        this.name = file.name;
         this.dataurl = dataurl;
         this.el = el;
         this.playing = false;
@@ -56,31 +57,29 @@ var MusicPlayer = function(){
         var song;
         reader.addEventListener('loadend', function(e){
             if(player.canPlayType(songs[index].type)){
-                song = new Song(songs[index],e.target.result, document.createElement('li'));
-                songList.push(song);
-                cup.push(song);
+                song = new Song(songs[index], e.target.result, document.createElement('li'));
+                addToLibrary(song);
                 if(++index < songs.length)
                     reader.readAsDataURL(songs[index]);
-                else{
-                    setLibrary(cup);
-                    index = 0;
-                    cup = [];
-                }
             }
 
         }, false);
         reader.readAsDataURL(songs[0]);
 
     }
-    var setLibrary = function(songList){
-        for (var i = 0 ; i < songList.length ; i++){
-            var song = songList[i];
-            song.el.setAttribute('onclick', 'music.play(' + i + ')');
-            var title = "<h4>".concat(song.file.name).concat("</h4>")
-            var size = "<small>Size: ".concat(Math.floor(song.file.size/1048576)).concat("mb</small>")
-            song.el.innerHTML =  title.concat(size);
-            songlist.appendChild(song.el);
-        }
+    var addToLibrary = function(song){
+        for(var s in songList)
+            if(song.name === s.name) return;
+        songList.push(song);
+        song.el.setAttribute('data-index', songList.length);
+        song.el.addEventListener('click', function(){
+            music.play(song.el.getAttribute('data-index'));
+        })
+        var title = "<h4>".concat(song.name).concat("</h4>")
+        var size = "<small>Size: ".concat(Math.floor(song.file.size/1048576)).concat("mb</small>")
+        song.el.innerHTML =  title.concat(size);
+        songlist.appendChild(song.el);
+
        
     }
     /**
