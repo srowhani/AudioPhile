@@ -1,5 +1,4 @@
 define(function(require){
-    var canvas = require('Canvas');
     var _songs = {};
     var _isPlaying = false;
 
@@ -22,33 +21,39 @@ define(function(require){
         _freq = new Uint8Array(64);
 
     })();
-    //Canvas utilities
+    
+    var populateList = function(song){
+        if(song.file.name in _songs) return;
 
-    /*==============================================================
-    * Anonymous Functions
-    ==============================================================*/
-
-    var populateList = function(_songs){
-        for (var song in _songs){
-            _songs[song].element.setAttribute('onclick', 'app.player.play(\'' + _songs[song].file.name + '\')');
-            var title = "<h4>".concat(song).concat("</h4>")
-            var size = "<small>Size: ".concat(Math.floor(_songs[song].file.size/1048576)).concat("mb</small>")
-            _songs[song].element.innerHTML =  title.concat(size);
-            songlist.appendChild(_songs[song].element);
-        }
+        console.log(_songs);
+        _songs[song.file.name] = song;
+        song.element.setAttribute('onclick', 'app.player[\'play\'](\'' + btoa(song.file.name) + '\')');
+        var title = "<h4>".concat(song.file.name).concat("</h4>")
+        var size = "<small>Size: ".concat(Math.floor(song.file.size/1048576)).concat("mb</small>")
+        song.element.innerHTML =  title.concat(size);
+        console.log(song.element);
+        songlist.appendChild(song.element);
     }
     return {
         play : function(_name){
-            if( !(_name in _songs) ) throw new Error("Unable to play song");
-            else player.src = _songs[_name].dataurl;
-            window.setTimeout(2000, player.play());
+            if( !(atob(_name) in _songs) ) throw new Error("Unable to play song");
+            else player.src = _songs[atob(_name)].dataurl;
+            player.play();
+            _isPlaying = true;
+
         },
         pause: function(){
             player.pause();
+            _isPlaying = false;
         },
         getSongs : function(){
-            return _songs;
+            a = [];
+            for(var song in _songs){
+                a.push(song);
+            }
+            return a
         },
+        getFrequency: function(){return _freq},
         loadTracks : function(_files){
             var reader = new FileReader();
             var index  = 0;
@@ -61,16 +66,18 @@ define(function(require){
                         dataurl : e.target.result, 
                         element : document.createElement('li')
                     });
-                    _songs[song.file.name] = song;
-                    if(++index < _files.length)
-                        reader.readAsDataURL(_files[index]);
-                    else{
-                        populateList(_songs);
+                    if(index < _files.length){
+                        populateList(song);
+                        console.log(index);
+                        try{
+                            reader.readAsDataURL(_files[++index]);
+                        }catch(e){}
                     }
                 }
             }, false);
             reader.readAsDataURL(_files[index]);
         },
-        isPlaying : function(){return _isPlaying}
+        isPlaying : function(){return _isPlaying},
+        getAnalyser : function(){return _analyser}
     }
 });

@@ -9,7 +9,6 @@ define(function(){
 	        });
 	        songlist.ondrop = function(e){
 		        e.preventDefault(); 
-		        console.log(_player);
 		       	_player.loadTracks(e.dataTransfer.files);
 	        };
 
@@ -25,7 +24,7 @@ define(function(){
 
 	        player.addEventListener('play', function(){
 	            isPlaying = true;
-	            _canvas.update();
+	            _canvas.update(_player.getAnalyser());
 	        }, false);
 	        ['ended', 'pause'].forEach(function(e){
 	            player.addEventListener(e, function(){
