@@ -6,7 +6,10 @@
             margin-left: auto;
             margin-right: auto;
             display: block;
-        }
+}
+#songlist.drag{
+    background:url('http://inspectorpages.com/wp-content/blogs.dir/1/files/2012/01/drop-files-here.png');
+}
 #songlist > li.playing{
     background-color: #fff;
 

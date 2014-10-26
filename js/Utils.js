@@ -4,10 +4,15 @@ define(function(){
     	init : function(_player, _canvas){
 	        ['over', 'end', ''].forEach(function(e){
 	        	songlist['ondrag' + e] = function(){
+	        		this.setAttribute('class', 'drag');
 	        		return false
 	        	}
 	        });
-	        songlist.ondrop = function(e){
+	        songlist['ondragleave'] = function(){
+	        	this.removeAttribute('class');
+	        }
+	        songlist['ondrop'] = function(e){
+	        	this.removeAttribute('class');
 		        e.preventDefault(); 
 		       	_player.loadTracks(e.dataTransfer.files);
 	        };
@@ -23,13 +28,13 @@ define(function(){
 	        }, false);
 
 	        player.addEventListener('play', function(){
-	            isPlaying = true;
+	            _player.isPlaying = true;
 	            _canvas.update(_player.getAnalyser());
 	        }, false);
 
 	        ['ended', 'pause'].forEach(function(e){
 	            player.addEventListener(e, function(){
-	                isPlaying = false;
+	                _player.isPlaying = false;
 	            }, false);
 	        });
 	    }

@@ -87,9 +87,7 @@ define(function(require){
             }, false);
             reader.readAsDataURL(_files[index]);
         },
-        isPlaying : function(){
-            return _isPlaying
-        },
+        isPlaying : _isPlaying,
         getAnalyser : function(){
             return _analyser
         }

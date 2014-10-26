@@ -22,8 +22,7 @@ define(function(){
 	            				  3,
 	            				  -0.5*_player.getFrequency()[i]
 	            				 ); // x pos, y pos, width, height
-	        if(_player.isPlaying())
-	        	window.requestAnimationFrame(update) //animate that shit
+	        window.requestAnimationFrame(update) //animate that shit
 
     }
     
