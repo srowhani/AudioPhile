@@ -15,7 +15,7 @@ define(function(){
 	        document.addEventListener('keydown', function(e){
 	            switch(e.which){
 	                case 32:
-	                    _player.isPlaying ? player.pause() : player.play();
+	                    _player.isPlaying() ? _player.pause() : _player.play();
 	                    break;
 	                default:
 	                    break;
@@ -26,12 +26,12 @@ define(function(){
 	            isPlaying = true;
 	            _canvas.update(_player.getAnalyser());
 	        }, false);
+
 	        ['ended', 'pause'].forEach(function(e){
 	            player.addEventListener(e, function(){
 	                isPlaying = false;
 	            }, false);
 	        });
-	        console.log("Events properly attatched");
 	    }
     };
 });

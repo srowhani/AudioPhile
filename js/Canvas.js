@@ -20,10 +20,11 @@ define(function(){
 	            _context.fillRect(i*5, 
 	            				  _canvas.height,
 	            				  3,
-	            				  (_canvas.height - (_player.getFrequency()[i]))
+	            				  -0.5*_player.getFrequency()[i]
 	            				 ); // x pos, y pos, width, height
 	        if(_player.isPlaying())
 	        	window.requestAnimationFrame(update) //animate that shit
+
     }
     
  
@@ -32,7 +33,6 @@ define(function(){
     	init: function(player){
     		_canvas  = document.getElementById('visualize');
         	_context = _canvas.getContext('2d');
-        	//_isPlaying = false;
         	for(var i = 0 ; i < NUMGRADIENTS; i++){
          		_gradients[i] = _context.createLinearGradient(0,0,0,_canvas.height);
         		for(var k = 1, j = 0, m = 4; j < 5; k-=.25, j++, m--)
