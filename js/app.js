@@ -6,8 +6,6 @@ define(function(require){
 	return {
 		init: function(){
 			_util.init(_player, _canvas.init(_player));
-		},
-		player : _player
-		
+		}
 	}
 })
