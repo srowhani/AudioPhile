@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * Description
  * @method MusicPlayer
@@ -207,4 +208,13 @@ var music;
 window.addEventListener('load', function(){
     music = new MusicPlayer().init();
 }, false);
+=======
 
+require.config({
+>>>>>>> master
+
+});
+require(['app', 'Utils', 'Player'], function(app){
+	app.init();
+	window.app = app;
+})
