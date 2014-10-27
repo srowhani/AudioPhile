@@ -9,6 +9,7 @@ define(function(){
     var _player;
 
     var update = function(){
+            if (!_player.isPlaying) return;
 	        _player.getAnalyser().getByteFrequencyData(_player.getFrequency());
 	        _context.clearRect(0, 0, _canvas.width, _canvas.height);
 

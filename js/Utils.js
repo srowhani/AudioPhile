@@ -20,7 +20,9 @@ define(function(){
 	        document.addEventListener('keydown', function(e){
 	            switch(e.which){
 	                case 32:
-	                    _player.isPlaying() ? _player.pause() : _player.play();
+	                    _player.isPlaying ? document.getElementById('player').pause() : 
+	                    					document.getElementById('player').play();
+
 	                    break;
 	                default:
 	                    break;
