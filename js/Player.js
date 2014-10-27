@@ -4,6 +4,8 @@ define(function(require){
 
     var Song = function(config){
         this.file = config.file;
+        this.name = config.name;
+        this.size = config.size;
         this.dataurl = config.dataurl;
         this.element = config.element;
     };
@@ -27,9 +29,9 @@ define(function(require){
 
         _songs[song.file.name] = song;
         song.element.setAttribute('class', 'song');
-        song.element.setAttribute('onclick', 'app.player[\'play\'](\'' + btoa(song.file.name) + '\')');
-        var title = "<h4>".concat(song.file.name).concat("</h4>")
-        var size = "<small>Size: ".concat(Math.floor(song.file.size/1048576)).concat("mb</small>")
+        song.element.setAttribute('onclick', 'app.player[\'play\'](\'' + btoa(song.name) + '\')');
+        var title = "<h4>".concat(song.name).concat("</h4>")
+        var size = "<small>Size: ".concat(song.size).concat("mb</small>")
         song.element.innerHTML =  title.concat(size);
         songlist.appendChild(song.element);
     }
@@ -72,6 +74,8 @@ define(function(require){
                     if(player.canPlayType(_files[index].type)){
                         song = new Song({
                             file    : _files[index],
+                            name    : _files[index].name,
+                            size    : Math.floor(_files[index].size / 1048576),
                             dataurl : e.target.result, 
                             element : document.createElement('li')
                         });
@@ -80,9 +84,7 @@ define(function(require){
                     try{
                         reader.readAsDataURL(_files[++index]);
                     }
-                    catch(e){
-                        throw new Error("IOException e ".concat(e));
-                    }
+                    catch(e){}
                 }
             }, false);
             reader.readAsDataURL(_files[index]);

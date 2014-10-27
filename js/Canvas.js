@@ -4,16 +4,12 @@ define(function(){
 
     var _canvas,
     	_context,
-    	_gradients=[];
+    	_gradient;
 
     var _player;
 
     var update = function(){
 	        _player.getAnalyser().getByteFrequencyData(_player.getFrequency());
-	        var count = 0;
-	        for(var i = 0 ; i < 10 ; i++) 
-	            count += _player.getFrequency()[i];
-	        _context.fillStyle = count < 2200 ? _gradients[0] : _gradients[1]
 	        _context.clearRect(0, 0, _canvas.width, _canvas.height);
 
 	        for(var i = 0 ; i < _player.getFrequency().length ; i++) 
@@ -32,11 +28,10 @@ define(function(){
     	init: function(player){
     		_canvas  = document.getElementById('visualize');
         	_context = _canvas.getContext('2d');
-        	for(var i = 0 ; i < NUMGRADIENTS; i++){
-         		_gradients[i] = _context.createLinearGradient(0,0,0,_canvas.height);
-        		for(var k = 1, j = 0, m = 4; j < 5; k-=.25, j++, m--)
-            		_gradients[i].addColorStop(k, ["#000000", "#ff0000", "#fff000", "#ffff00", "#fffff0"][(i===0) ? j : m])
-        	}
+         		_gradient = _context.createLinearGradient(0,0,0,_canvas.height);
+        		for(var j = 0, k = 1 ; j < 5 ; k-=.25, j++)
+            		_gradient.addColorStop(k, ["#000000", "#ff0000", "#fff000", "#ffff00", "#fffff0"][j])
+            _context.fillStyle = _gradient;
         	_player = player;
         	return this;
     	},
