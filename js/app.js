@@ -5,7 +5,7 @@ define(function(require){
 	var _canvas = require('Canvas');
 	return {
 		init: function(){
-			_util.init(_player, _canvas.init(_player));
+			_util.init(_player.init(), _canvas.init(_player));
 		}
 	}
 })
