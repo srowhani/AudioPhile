@@ -34,7 +34,7 @@ define(function(require){
     return {
 
         init : function(){
-            _context  =  new window.AudioContext();
+		    _context = new AudioContext();
             _source   = _context.createMediaElementSource(player);
             _analyser = _context.createAnalyser();
             _source.connect(_analyser); 
@@ -43,6 +43,7 @@ define(function(require){
             _self = this;
             return this;
         },
+
         play : function(element){
             var _name = element['dataset'].id;
             if(!_playing) _playing = element
