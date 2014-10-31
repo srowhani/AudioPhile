@@ -1,8 +1,13 @@
 define(function(require){
-    var _songs = {};
-    var _isPlaying = false;
-    var _self;
-    
+    var _songs = {},
+       _isPlaying = false,
+       _self,
+       _playing,
+       _source, 
+       _analyser, 
+        _freq,
+        _context;
+
     var Song = function(config){
         this.file = config.file;
         this.name = config.name;
@@ -10,10 +15,7 @@ define(function(require){
         this.dataurl = config.dataurl;
         this.element = config.element;
     };
-    var _source, 
-        _analyser, 
-        _freq,
-        _context;
+       
 
     var populateList = function(song){
         if(song.file.name in _songs) return;
@@ -32,7 +34,7 @@ define(function(require){
     return {
 
         init : function(){
-            _context  =  new window.AudioContext();
+		    _context = new AudioContext();
             _source   = _context.createMediaElementSource(player);
             _analyser = _context.createAnalyser();
             _source.connect(_analyser); 
@@ -41,16 +43,19 @@ define(function(require){
             _self = this;
             return this;
         },
+
         play : function(element){
             var _name = element['dataset'].id;
+            if(!_playing) _playing = element
             if(!_name) return;
 
             if( !(atob(_name) in _songs)) throw new Error("Unable to play song");
             else player.src = _songs[atob(_name)].dataurl;
-            [].slice.call(songlist.querySelectorAll('.song')).forEach(function(e){                    
-                e.className="song";
-            });
-            element.className+=" playing";
+            
+            _playing.className = "song";
+            element.className  += " playing";
+
+            _playing = element;
             _freq = new Uint8Array(64); 
             player.play();
             _isPlaying = true;
@@ -67,8 +72,11 @@ define(function(require){
             }
             return a
         },
+        getPlaying : function(){
+            return _playing;
+        },
         getFrequency: function(){
-            return _freq
+            return _freq;
         },
         loadTracks : function(_files){
             var reader = new FileReader();
@@ -94,9 +102,10 @@ define(function(require){
             }, false);
             reader.readAsDataURL(_files[index]);
         },
-        isPlaying : _isPlaying,
+
         getAnalyser : function(){
             return _analyser
-        }
+        },
+        isPlaying : _isPlaying
     }
 });
