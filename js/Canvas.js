@@ -9,16 +9,17 @@ define(function(){
     var _player;
 
     var update = function(){
-	        _player.getAnalyser().getByteFrequencyData(_player.getFrequency());
-	        _context.clearRect(0, 0, _canvas.width, _canvas.height);
+        if (!_player.isPlaying) return;
+        _player.getAnalyser().getByteFrequencyData(_player.getFrequency());
+        _context.clearRect(0, 0, _canvas.width, _canvas.height);
 
-	        for(var i = 0 ; i < _player.getFrequency().length ; i++) 
-	            _context.fillRect(i*5, 
-	            				  _canvas.height,
-	            				  3,
-	            				  -0.5*_player.getFrequency()[i]
-	            				 ); // x pos, y pos, width, height
-	        window.requestAnimationFrame(update) //animate that shit
+        for(var i = 0 ; i < _player.getFrequency().length ; i++) 
+            _context.fillRect(i*5, 
+            		_canvas.height,
+            		3,
+            		-0.5*_player.getFrequency()[i]
+            		); // x pos, y pos, width, height
+        window.requestAnimationFrame(update) //animate that shit
 
     }
     
