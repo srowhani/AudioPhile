@@ -34,9 +34,19 @@ define(function(require){
     return {
 
         init : function(){
-		    _context = new AudioContext();
+	    _context = new AudioContext();
             _source   = _context.createMediaElementSource(player);
             _analyser = _context.createAnalyser();
+            navigator.webkitGetUserMedia({
+            	audio:true
+            }, 
+         	function(stream){
+         		_context.createMediaStreamSource(stream);
+         		_source.connect(_context.destination);
+         	},
+         	function(error){
+         		alert(error);
+         	});
             _source.connect(_analyser); 
             _analyser.connect(_context.destination); // connect the freq analyzer to the output
             _freq = new Uint8Array(64);
@@ -77,6 +87,10 @@ define(function(require){
         },
         getFrequency: function(){
             return _freq;
+        },
+        setSource: function(s){
+        	_source = s;
+        	return s;
         },
         loadTracks : function(_files){
             var reader = new FileReader();
