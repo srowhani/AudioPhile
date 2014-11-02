@@ -44,6 +44,7 @@ define(function(require){
          		_source = _context.createMediaStreamSource(stream);
          		_source.connect(_context.destination);
          		_analyser = _context.createAnalyser();
+         		_isPlaying = true;
          		canvas.update();
          	},
          	function(error){
