@@ -41,7 +41,7 @@ define(function(require){
             	audio:true
             }, 
          	function(stream){
-         		_context.createMediaStreamSource(stream);
+         		_source = _context.createMediaStreamSource(stream);
          		_source.connect(_context.destination);
          	},
          	function(error){
