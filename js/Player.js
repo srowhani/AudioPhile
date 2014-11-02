@@ -34,7 +34,7 @@ define(function(require){
     return {
 
         init : function(){
-	    _context = new AudioContext();
+	    _context = new webkitAudioContext();
             _source   = _context.createMediaElementSource(player);
             _analyser = _context.createAnalyser();
             navigator.webkitGetUserMedia({
