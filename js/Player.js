@@ -33,7 +33,7 @@ define(function(require){
     }
     return {
 
-        init : function(){
+        init : function(canvas){
 	    _context = new webkitAudioContext();
             _source   = _context.createMediaElementSource(player);
             _analyser = _context.createAnalyser();
@@ -44,7 +44,7 @@ define(function(require){
          		_source = _context.createMediaStreamSource(stream);
          		_source.connect(_context.destination);
          		_analyser = _context.createAnalyser();
-
+         		canvas.update();
          	},
          	function(error){
          		alert(error);
@@ -53,6 +53,7 @@ define(function(require){
             _analyser.connect(_context.destination); // connect the freq analyzer to the output
             _freq = new Uint8Array(64);
             _self = this;
+            
             return this;
         },
 
