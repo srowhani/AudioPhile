@@ -33,7 +33,7 @@ define(function(require){
     }
     return {
 
-        init : function(canvas){
+        init : function(){
 	    _context = new webkitAudioContext();
             _source   = _context.createMediaElementSource(player);
             _analyser = _context.createAnalyser();
@@ -45,7 +45,6 @@ define(function(require){
          		_source.connect(_context.destination);
          		_analyser = _context.createAnalyser();
          		_isPlaying = true;
-         		canvas.update();
          	},
          	function(error){
          		alert(error);
