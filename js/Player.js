@@ -41,16 +41,21 @@ define(function(require){
             }, 
          	function(s){
          		_source = _context.createMediaStreamSource(s);
-         		_source.connect(_context.destination);
+         		 _analyser = _context.createAnalyser();
+        		 _source.connect(_analyser);
+        		 _analyser.connect(_context.destination); // connect the freq analyzer to the output
+
          		_isPlaying = true;
          	},
          	function(e){
          		_source   = _context.createMediaElementSource(player);
+         		 _analyser = _context.createAnalyser();
+        		 _source.connect(_analyser);
+        		 _analyser.connect(_context.destination); // connect the freq analyzer to the output
+
 
          	});
-          _analyser = _context.createAnalyser();
-           _source.connect(_analyser); 
-            _analyser.connect(_context.destination); // connect the freq analyzer to the output
+           
             _freq = new Uint8Array(64);
             _self = this;
             
