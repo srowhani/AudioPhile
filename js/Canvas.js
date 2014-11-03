@@ -1,7 +1,5 @@
 define(function(){
 	'use strict';
-	var NUMGRADIENTS = 2;
-
     var _canvas,
     	_context,
     	_gradient;
@@ -9,7 +7,7 @@ define(function(){
     var _player;
 
     var update = function(){
-        //if (!_player.isPlaying) return;
+        if (!_player.isPlaying) return;
         _player.getAnalyser().getByteFrequencyData(_player.getFrequency());
         _context.clearRect(0, 0, _canvas.width, _canvas.height);
 
@@ -33,7 +31,7 @@ define(function(){
         		for(var j = 0, k = 1 ; j < 5 ; k-=.25, j++)
             		_gradient.addColorStop(k, ["#000000", "#ff0000", "#fff000", "#ffff00", "#fffff0"][j])
             _context.fillStyle = _gradient;
-        	_player = player;
+        	_player = player.init();
         	return this;
     	},
     	getContext: function(){
