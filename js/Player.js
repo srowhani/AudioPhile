@@ -34,31 +34,13 @@ define(function(require){
     return {
 
         init : function(){
-	    _context = new webkitAudioContext();
-           
-            navigator.webkitGetUserMedia({
-            	audio:true
-            }, 
-         	function(s){
-         		_source = _context.createMediaStreamSource(s);
-         		 _analyser = _context.createAnalyser();
-        		 _source.connect(_analyser);
-        		 _analyser.connect(_context.destination); // connect the freq analyzer to the output
-
-         		_isPlaying = true;
-         	},
-         	function(e){
-         		_source   = _context.createMediaElementSource(player);
-         		 _analyser = _context.createAnalyser();
-        		 _source.connect(_analyser);
-        		 _analyser.connect(_context.destination); // connect the freq analyzer to the output
-
-
-         	});
-           
+		    _context = new AudioContext();
+            _source   = _context.createMediaElementSource(player);
+            _analyser = _context.createAnalyser();
+            _source.connect(_analyser); 
+            _analyser.connect(_context.destination); // connect the freq analyzer to the output
             _freq = new Uint8Array(64);
             _self = this;
-            
             return this;
         },
 
@@ -95,10 +77,6 @@ define(function(require){
         },
         getFrequency: function(){
             return _freq;
-        },
-        setSource: function(s){
-        	_source = s;
-        	return s;
         },
         loadTracks : function(_files){
             var reader = new FileReader();
