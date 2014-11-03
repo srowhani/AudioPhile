@@ -2,7 +2,8 @@ define(function(require){
 	'use strict';
 	return {
 		init: function(u,p,c){
-			u.init(p.init(c),c.init(p));
+			p = p.init();
+			u.init(p,c.init(p));
 		}		
 	}
 })
