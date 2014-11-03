@@ -2,6 +2,7 @@ define(function(){
 	
     return {
     	init : function(_player, _canvas){
+    		_canvas.update();
 	        ['over', 'end', ''].forEach(function(e){
 	        	songlist['ondrag' + e] = function(){
 	        		this.setAttribute('class', 'drag');
@@ -21,8 +22,7 @@ define(function(){
 	            switch(e.which){
 	                case 32:
 	                    _player.isPlaying ? document.getElementById('player').pause() : 
-	                    					document.getElementById('player').play();
-
+	                    			document.getElementById('player').play();
 	                    break;
 	                default:
 	                    break;
@@ -31,7 +31,7 @@ define(function(){
 
 	        player.addEventListener('play', function(){
 	            _player.isPlaying = true;
-	            _canvas.update(_player.getAnalyser());
+	            _canvas.update();
 	        }, false);
 
 	        ['ended', 'pause'].forEach(function(e){
