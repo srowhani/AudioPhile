@@ -2,7 +2,6 @@ define(function(){
 	
     return {
     	init : function(_player, _canvas){
-    		_canvas.update();
 	        ['over', 'end', ''].forEach(function(e){
 	        	songlist['ondrag' + e] = function(){
 	        		this.setAttribute('class', 'drag');
