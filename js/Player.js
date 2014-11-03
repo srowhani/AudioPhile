@@ -40,14 +40,13 @@ define(function(require){
             navigator.webkitGetUserMedia({
             	audio:true
             }, 
-         	function(stream){
-         		_source = _context.createMediaStreamSource(stream);
+         	function(s){
+         		_source = _context.createMediaStreamSource(s);
          		_source.connect(_context.destination);
-         		_analyser = _context.createAnalyser();
          		_isPlaying = true;
          	},
-         	function(error){
-         		alert(error);
+         	function(e){
+         		throw new Error(e);
          	});
             _source.connect(_analyser); 
             _analyser.connect(_context.destination); // connect the freq analyzer to the output
