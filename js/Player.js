@@ -35,8 +35,7 @@ define(function(require){
 
         init : function(){
 	    _context = new webkitAudioContext();
-            _source   = _context.createMediaElementSource(player);
-            _analyser = _context.createAnalyser();
+           
             navigator.webkitGetUserMedia({
             	audio:true
             }, 
@@ -46,9 +45,11 @@ define(function(require){
          		_isPlaying = true;
          	},
          	function(e){
-         		throw new Error(e);
+         		_source   = _context.createMediaElementSource(player);
+
          	});
-            _source.connect(_analyser); 
+          _analyser = _context.createAnalyser();
+           _source.connect(_analyser); 
             _analyser.connect(_context.destination); // connect the freq analyzer to the output
             _freq = new Uint8Array(64);
             _self = this;
