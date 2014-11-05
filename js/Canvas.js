@@ -1,7 +1,5 @@
 define(function(){
 	'use strict';
-	var NUMGRADIENTS = 2;
-
     var _canvas,
     	_context,
     	_gradient;
@@ -20,10 +18,7 @@ define(function(){
 	            				  -0.5*_player.getFrequency()[i]
 	            				 ); // x pos, y pos, width, height
 	        window.requestAnimationFrame(update) //animate that shit
-
     }
-    
- 
     
     return {
     	init: function(player){
