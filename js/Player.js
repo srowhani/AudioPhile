@@ -66,11 +66,7 @@ define(function(require){
             _isPlaying = false;
         },
         getSongs : function(){
-            a = [];
-            for(var song in _songs){
-                a.push(song);
-            }
-            return a
+        	return _songs;
         },
         getPlaying : function(){
             return _playing;
