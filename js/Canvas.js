@@ -31,7 +31,7 @@ define(function(){
         		for(var j = 0, k = 1 ; j < 5 ; k-=.25, j++)
             		_gradient.addColorStop(k, ["#000000", "#ff0000", "#fff000", "#ffff00", "#fffff0"][j])
             _context.fillStyle = _gradient;
-        	_player = player.init();
+        	_player = player;
         	return this;
     	},
     	getContext: function(){
