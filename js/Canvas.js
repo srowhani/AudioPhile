@@ -38,7 +38,7 @@ define(function(){
 
         		for(var j = 0, k = 1 ; j < 5 ; k-=.25, j++){
             			_gradient.addColorStop(k, ["#000000", "#ff0000", "#fff000", "#ffff00", "#fffff0"][j])
-            			_gradient2.addColorStop(i, '#000000,#0000ff,#000fff,#00ffff,#0fffff'.split(',')[j])
+            			_gradient2.addColorStop(k, '#000000,#0000ff,#000fff,#00ffff,#0fffff'.split(',')[j])
         		}
             _context.fillStyle = _gradient;
         	_player = player;
