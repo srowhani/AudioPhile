@@ -10,14 +10,20 @@ define(function(){
         if (!_player.isPlaying) return;
         _player.getAnalyser().getByteFrequencyData(_player.getFrequency());
         _context.clearRect(0, 0, _canvas.width, _canvas.height);
-
-        for(var i = 0 ; i < _player.getFrequency().length ; i++) 
+        var sum = 0;
+	for(var i = 0  ; i < 4 ; i++, sum+= _player.getFrequency()[i])
+		context.fillStyle = sum > 700 ? _gradient : _gradient2;
+        for(var i = 0 ; i < _player.getFrequency().length ; i++) {
             _context.fillRect(i*5, 
             		_canvas.height,
             		3,
             		-0.5*_player.getFrequency()[i]
             		); // x pos, y pos, width, height
-        window.requestAnimationFrame(update) //animate that shit
+        }
+        window.setTimeout(function(){
+        	window.requestAnimationFrame(update)
+        }, 1000/30)
+        //animate that shit
 
     }
     
@@ -32,7 +38,6 @@ define(function(){
             			_gradient.addColorStop(k, ["#000000", "#ff0000", "#fff000", "#ffff00", "#fffff0"][j])
             			_gradient2.addColorStop(i, '#000000,#0000ff,#000fff,#00ffff,#0fffff'.split(',')[j])
         		}
-            _context.fill2 = _gradient2;
             _context.fillStyle = _gradient;
         	_player = player;
         	return this;
