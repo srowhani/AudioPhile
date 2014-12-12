@@ -14,9 +14,9 @@ define(function(){
 	for(var i = 0  ; i < 4 ; i++, sum+= _player.getFrequency()[i])
 		_context.fillStyle = sum > 725 ? _gradient2 : _gradient;
         for(var i = 0 ; i < _player.getFrequency().length ; i++) {
-            _context.fillRect(i*(5+(sum>725)), 
+            _context.fillRect(i*6, 
             		_canvas.height,
-            		3 + 2 * (sum > 725),
+            		5,
             		-0.5*_player.getFrequency()[i]
             		); // x pos, y pos, width, height
         }
