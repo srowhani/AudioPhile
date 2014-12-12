@@ -2,7 +2,7 @@ define(function(){
 	'use strict';
     var _canvas,
     	_context,
-    	_gradient;
+    	_gradient,_gradient2;
 
     var _player;
 
@@ -28,8 +28,11 @@ define(function(){
     		_canvas  = document.getElementById('visualize');
         	_context = _canvas.getContext('2d');
          		_gradient = _context.createLinearGradient(0,0,0,_canvas.height);
-        		for(var j = 0, k = 1 ; j < 5 ; k-=.25, j++)
-            		_gradient.addColorStop(k, ["#000000", "#ff0000", "#fff000", "#ffff00", "#fffff0"][j])
+        		for(var j = 0, k = 1 ; j < 5 ; k-=.25, j++){
+            			_gradient.addColorStop(k, ["#000000", "#ff0000", "#fff000", "#ffff00", "#fffff0"][j])
+            			_gradient2.addColorStop(i, '#000000,#0000ff,#000fff,#00ffff,#0fffff'.split(',')[j])
+        		}
+            _context.fill2 = _gradient2;
             _context.fillStyle = _gradient;
         	_player = player;
         	return this;
