@@ -12,7 +12,7 @@ define(function(){
         _context.clearRect(0, 0, _canvas.width, _canvas.height);
         var sum = 0;
 	for(var i = 0  ; i < 4 ; i++, sum+= _player.getFrequency()[i])
-		context.fillStyle = sum > 700 ? _gradient : _gradient2;
+		_context.fillStyle = sum > 700 ? _gradient : _gradient2;
         for(var i = 0 ; i < _player.getFrequency().length ; i++) {
             _context.fillRect(i*5, 
             		_canvas.height,
