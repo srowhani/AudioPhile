@@ -12,11 +12,11 @@ define(function(){
         _context.clearRect(0, 0, _canvas.width, _canvas.height);
         var sum = 0;
 	for(var i = 0  ; i < 4 ; i++, sum+= _player.getFrequency()[i])
-		_context.fillStyle = sum > 800 ? _gradient2 : _gradient;
+		_context.fillStyle = sum > 725 ? _gradient2 : _gradient;
         for(var i = 0 ; i < _player.getFrequency().length ; i++) {
-            _context.fillRect(i*5, 
+            _context.fillRect(i*(5+(sum>725)), 
             		_canvas.height,
-            		3,
+            		3 + 2 * (sum > 725),
             		-0.5*_player.getFrequency()[i]
             		); // x pos, y pos, width, height
         }
