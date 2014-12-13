@@ -10,9 +10,8 @@ define(function(){
         if (!_player.isPlaying) return;
         _player.getAnalyser().getByteFrequencyData(_player.getFrequency());
         _context.clearRect(0, 0, _canvas.width, _canvas.height);
-        var sum = 0;
-	for(var i = 0  ; i < 4 ; i++, sum+= _player.getFrequency()[i])
-		_context.fillStyle = sum > 725 ? _gradient2 : _gradient;
+        var sum = _player.getFrequency().slice(0,4).reduce(function(x,y){return x+y});
+	_context.fillStyle = sum > 725 ? _gradient2 : _gradient;
         for(var i = 0 ; i < _player.getFrequency().length ; i++) {
             _context.fillRect(i*6, 
             		_canvas.height,
