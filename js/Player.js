@@ -3,8 +3,8 @@ define(function(require){
        _isPlaying = false,
        _self,
        _playing,
-       _source, 
-       _analyser, 
+       _source,
+       _analyser,
         _freq,
         _context;
 
@@ -15,7 +15,7 @@ define(function(require){
         this.dataurl = config.dataurl;
         this.element = config.element;
     };
-       
+
 
     var populateList = function(song){
         if(song.file.name in _songs) return;
@@ -34,13 +34,20 @@ define(function(require){
     return {
 
         init : function(){
-			_context = new webkitAudioContext();
+			       _context = new webkitAudioContext();
             _source   = _context.createMediaElementSource(player);
             _analyser = _context.createAnalyser();
-            _source.connect(_analyser); 
+            _source.connect(_analyser);
             _analyser.connect(_context.destination); // connect the freq analyzer to the output
             _freq = new Uint8Array(64);
             _self = this;
+            populateList(new Song({
+              file : new File([], 'sample.mp3'),
+              name : 'Chopin Nocturne in F Minor-Op. 55, No 1',
+              size : 15.2,
+              dataurl : 'sample.mp3',
+              element : document.createChild('li')
+            }))
             return this;
         },
 
@@ -51,12 +58,12 @@ define(function(require){
 
             if( !(atob(_name) in _songs)) throw new Error("Unable to play song");
             else player.src = _songs[atob(_name)].dataurl;
-            
+
             _playing.className = "song";
             element.className  += " playing";
 
             _playing = element;
-            _freq = new Uint8Array(64); 
+            _freq = new Uint8Array(64);
             player.play();
             _isPlaying = true;
 
@@ -85,7 +92,7 @@ define(function(require){
                             file    : _files[index],
                             name    : _files[index].name,
                             size    : Math.floor(_files[index].size / 1048576),
-                            dataurl : e.target.result, 
+                            dataurl : e.target.result,
                             element : document.createElement('li')
                         });
                         populateList(song);
