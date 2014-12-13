@@ -46,7 +46,7 @@ define(function(require){
               name : 'Chopin Nocturne in F Minor-Op. 55, No 1',
               size : 15.2,
               dataurl : 'sample.mp3',
-              element : document.createChild('li')
+              element : document.createElement('li')
             }))
             return this;
         },
