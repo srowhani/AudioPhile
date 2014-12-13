@@ -10,7 +10,7 @@ to load sound files and play them back, as well as visualizing them.
 Using Canvas, I draw the frequency data which is represented as an UintArray by iterating through it
 and drawing each of the array values as rectangles.
 
-As for the beat matching, if:
+As for the beat matching, if:<br/>
 <code>[].slice.call(_player.getFrequency()).slice(0,4).reduce(function(x,y){return x+y})</code>
 <br/>
 surpasses 720 (the limit for each frequency is 200) I set the fillstyle of my canvas context to be
