@@ -20,7 +20,7 @@ define(function(require){
     var populateList = function(song){
         if(song.file.name in _songs) return;
 
-        _songs[song.file.name] = song;
+        _songs[song.name] = song;
         song.element.setAttribute('class', 'song');
         song.element.setAttribute('data-id', btoa(song.name));
         song.element.addEventListener('click', function(e){
