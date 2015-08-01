@@ -19,9 +19,7 @@ define(function(){
             		-0.5*_player.getFrequency()[i]
             		); // x pos, y pos, width, height
         }
-        window.setTimeout(function(){
-        	window.requestAnimationFrame(update)
-        }, 1000/30)
+        window.setTimeout(update, 1000/30)
         //animate that shit
 
     }
