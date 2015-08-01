@@ -30,7 +30,7 @@ define(function(){
 
 	        player.addEventListener('play', function(){
 	            _player.isPlaying = true;
-	            _canvas.update();
+	            //_canvas.update();
 	        }, false);
 
 	        ['ended', 'pause'].forEach(function(e){
